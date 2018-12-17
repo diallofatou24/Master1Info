@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Adresse</string>
+
+    <string name="adresse">Adresse</string>
+    <string name="afficher">Afficher les adresses</string>
+    <string name="ajouter">Ajouter les adresses
+  </string>
+    <string name="action_settings">Settings</string>
+    <string name="adresy">Toutes mes adresses</string>
+    <string name="title_activity_afficher_addresse">AfficherAddresse</string>
+</resources>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AccesPagesWeb</string>
+    <string name="entete">À quelle sorte de page voulez-vous accéder ?</string>
+    <string name="theme1">"lièvre ?"</string>
+    <string name="theme2">"tortue ?"</string>
+    <string name="afficher">"VOIR PAGE WEB"</string>
+    <string name="message_erreur">"Vous n'avez rien sélectionné: que voulez-vous faire ?" </string>
+    <string name="quitter"> "quitter"</string>
+    <string name="recommencer">recommencer</string>
+    <string name="adresse_theme1">"https://fr.wikipedia.org/wiki/Lièvre"</string>
+    <string name="adresse_theme2">"https://fr.wikipedia.org/wiki/Tortue"</string>
+    <string name="adresse_themes1_et_2">"https://fr.wikipedia.org/wiki/Le_Lièvre_et_la_Tortue_(La_Fontaine)"</string>
+    <string name="change_pref"> "Préférences"</string>
+</resources>

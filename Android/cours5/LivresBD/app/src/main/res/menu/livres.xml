@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/livreauteur"
+        android:title="+livre+auteur"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/livre"
+        android:title="+livre"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/suplivreauteur"
+        android:title="- livre/auteur "
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/suplivre"
+        android:title="- livre"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/quitter"
+        android:title="quitter"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/search_item"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always|collapseActionView"
+
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:title="@string/search"
+        />
+
+</menu>

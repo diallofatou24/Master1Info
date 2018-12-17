@@ -1,0 +1,23 @@
+#include iostream.h
+
+enum class Note{ Do,Ré, Mi, Fa, Sol, La, Si};
+inline ostream& operator <<(ostream& out , Note n){
+  switch(n){
+  case Note::Do: out << "Do"; break;
+  case Note::Ré: out << "Ré"; break;
+  case Note::Mi: out << "Mi"; break;
+  case Note::Fa: out << "Fa"; break;
+  case Note::Sol: out << "Sol"; break;
+  case Note::La: out << "La"; break;
+  case Note::Si: out << "Si"; break;
+  }
+  return out;
+}
+
+int main(){
+  Note n {Note::Fa};
+  cout << n << endl;
+  
+}
+    
+  

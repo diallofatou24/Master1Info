@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity = "center_horizontal"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+     tools:context=".ErreurActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/message_erreur"
+        android:textSize="20sp"
+        android:padding="20sp"
+        android:gravity ="center_horizontal"/>
+
+    <Button
+        android:id="@+id/recommencer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:textSize="20sp"
+        android:padding="20sp"
+        android:text="@string/recommencer"
+        android:onClick="recommencer"/>
+
+    <Button
+        android:id="@+id/quitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:padding="20sp"
+        android:text="@string/quitter"
+        android:onClick="arreter" />
+</LinearLayout>

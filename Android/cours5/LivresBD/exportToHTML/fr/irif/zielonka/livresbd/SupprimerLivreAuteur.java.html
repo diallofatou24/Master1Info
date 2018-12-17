@@ -1,0 +1,239 @@
+<html>
+<head>
+<title>SupprimerLivreAuteur.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,128,0); font-weight: bold; }
+.s3 { color: rgb(128,128,128); font-style: italic; }
+.s4 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+SupprimerLivreAuteur.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">fr.irif.zielonka.livresbd; 
+ 
+</span><span class="s0">import </span><span class="s1">android.app.LoaderManager; 
+</span><span class="s0">import </span><span class="s1">android.content.ContentResolver; 
+</span><span class="s0">import </span><span class="s1">android.content.ContentUris; 
+</span><span class="s0">import </span><span class="s1">android.content.Context; 
+</span><span class="s0">import </span><span class="s1">android.content.CursorLoader; 
+</span><span class="s0">import </span><span class="s1">android.content.Loader; 
+</span><span class="s0">import </span><span class="s1">android.database.Cursor; 
+</span><span class="s0">import </span><span class="s1">android.net.Uri; 
+</span><span class="s0">import </span><span class="s1">android.support.v7.app.AppCompatActivity; 
+</span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+</span><span class="s0">import </span><span class="s1">android.util.Log; 
+</span><span class="s0">import </span><span class="s1">android.view.LayoutInflater; 
+</span><span class="s0">import </span><span class="s1">android.view.View; 
+</span><span class="s0">import </span><span class="s1">android.view.ViewGroup; 
+</span><span class="s0">import </span><span class="s1">android.widget.CheckBox; 
+ 
+</span><span class="s0">import </span><span class="s1">android.widget.ListView; 
+</span><span class="s0">import </span><span class="s1">android.widget.SimpleCursorAdapter; 
+</span><span class="s0">import </span><span class="s1">android.widget.TextView; 
+</span><span class="s0">import </span><span class="s1">android.widget.Toast; 
+ 
+</span><span class="s0">import </span><span class="s1">java.util.HashSet; 
+ 
+</span><span class="s0">public class </span><span class="s1">SupprimerLivreAuteur </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
+    </span><span class="s0">private </span><span class="s1">LoaderManager.LoaderCallbacks&lt;Cursor&gt; mLoaderCallback; 
+    </span><span class="s0">private </span><span class="s1">MySimpleCursorAdapter mAdapter; 
+    </span><span class="s0">private static final </span><span class="s1">String KEY = </span><span class="s2">&quot;arrayLong&quot;</span><span class="s1">; 
+    </span><span class="s0">private static final </span><span class="s1">String LOG = </span><span class="s2">&quot;SupprimerLIvreAuteur&quot;</span><span class="s1">; 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+        setContentView(R.layout.activity_supprimer_livre_auteur); 
+ 
+        mAdapter = </span><span class="s0">new </span><span class="s1">MySimpleCursorAdapter(</span><span class="s0">this</span><span class="s1">, R.layout.list_item, 
+                </span><span class="s0">null</span><span class="s1">, </span><span class="s3">//pas de cursor pour l'instant</span><span class="s1"> 
+                </span><span class="s0">new </span><span class="s1">String[]{</span><span class="s2">&quot;nom&quot;</span><span class="s1">, </span><span class="s2">&quot;title&quot;</span><span class="s1">}, 
+                </span><span class="s0">new int</span><span class="s1">[]{R.id.auteur, R.id.titre}, </span><span class="s4">0</span><span class="s1">); 
+        </span><span class="s0">if </span><span class="s1">(savedInstanceState != </span><span class="s0">null</span><span class="s1">) { 
+            </span><span class="s0">long</span><span class="s1">[] array = savedInstanceState.getLongArray(KEY); 
+            </span><span class="s0">if </span><span class="s1">(array == </span><span class="s0">null</span><span class="s1">) { 
+                Log.d(LOG, </span><span class="s2">&quot;onCreate array is null&quot;</span><span class="s1">); 
+            } </span><span class="s0">else </span><span class="s1">{ 
+                Log.d(LOG, </span><span class="s2">&quot;onCreate array size = &quot; </span><span class="s1">+ array.length); 
+            } 
+            </span><span class="s0">if </span><span class="s1">(array != </span><span class="s0">null</span><span class="s1">) { 
+                mAdapter.setLongArray(array); 
+            } 
+        } 
+ 
+ 
+        ListView list = (ListView) findViewById(R.id.list); 
+        list.setAdapter(mAdapter); 
+ 
+ 
+        mLoaderCallback = </span><span class="s0">new </span><span class="s1">LoaderManager.LoaderCallbacks&lt;Cursor&gt;() { 
+            @Override 
+            </span><span class="s0">public </span><span class="s1">Loader&lt;Cursor&gt; onCreateLoader(</span><span class="s0">int </span><span class="s1">id, Bundle args) { 
+                Uri uri = (</span><span class="s0">new </span><span class="s1">Uri.Builder()).scheme(</span><span class="s2">&quot;content&quot;</span><span class="s1">) 
+                        .authority(SupprimerLivreAuteur.</span><span class="s0">this</span><span class="s1">.getResources().getString(R.string.authority)) 
+                        .appendPath(</span><span class="s2">&quot;author&quot;</span><span class="s1">) 
+                        .appendPath(</span><span class="s2">&quot;title&quot;</span><span class="s1">) 
+                        .build(); 
+                </span><span class="s0">return new </span><span class="s1">CursorLoader(SupprimerLivreAuteur.</span><span class="s0">this</span><span class="s1">, uri, 
+                        </span><span class="s0">null</span><span class="s1">, </span><span class="s0">null</span><span class="s1">, </span><span class="s0">null</span><span class="s1">, </span><span class="s0">null</span><span class="s1">); 
+            } 
+ 
+            @Override 
+            </span><span class="s0">public void </span><span class="s1">onLoadFinished(Loader&lt;Cursor&gt; loader, Cursor data) { 
+                Log.d(LOG, </span><span class="s2">&quot;cursor size onLoadFinished=&quot; </span><span class="s1">+ data.getCount()); 
+                Toast.makeText(SupprimerLivreAuteur.</span><span class="s0">this</span><span class="s1">, </span><span class="s2">&quot;onLoadFinished&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+                mAdapter.swapCursor(data); 
+            } 
+ 
+            @Override 
+            </span><span class="s0">public void </span><span class="s1">onLoaderReset(Loader&lt;Cursor&gt; loader) { 
+                mAdapter.swapCursor(</span><span class="s0">null</span><span class="s1">); 
+            } 
+        }; 
+ 
+        getLoaderManager().initLoader(</span><span class="s4">0</span><span class="s1">, </span><span class="s0">null</span><span class="s1">, mLoaderCallback); 
+ 
+    } 
+ 
+    </span><span class="s3">/************** 
+     * end onCreate method 
+     **********************************/</span><span class="s1"> 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onSaveInstanceState(Bundle outState) { 
+        </span><span class="s0">long</span><span class="s1">[] array = mAdapter.toLongArray(); 
+        </span><span class="s0">if </span><span class="s1">(array == </span><span class="s0">null</span><span class="s1">) { 
+            Log.d(LOG, </span><span class="s2">&quot;saveInstanceState empty array&quot;</span><span class="s1">); 
+        } 
+        </span><span class="s0">if </span><span class="s1">(array != </span><span class="s0">null</span><span class="s1">) { 
+            outState.putLongArray(KEY, array); 
+            Log.d(LOG, </span><span class="s2">&quot;putLongArray size=&quot; </span><span class="s1">+ array.length); 
+        } 
+        </span><span class="s0">super</span><span class="s1">.onSaveInstanceState(outState); 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">supprimerLivres(View view) { 
+        </span><span class="s0">long</span><span class="s1">[] idArray = mAdapter.toLongArray(); 
+        </span><span class="s0">if </span><span class="s1">(idArray == </span><span class="s0">null</span><span class="s1">) { 
+            Log.d(LOG, </span><span class="s2">&quot;idArray is null in supprimerLivres&quot;</span><span class="s1">); 
+            </span><span class="s0">return</span><span class="s1">; 
+        } 
+        ContentResolver contentResolver = getContentResolver(); 
+ 
+        </span><span class="s0">for </span><span class="s1">(</span><span class="s0">long </span><span class="s1">l : idArray) { 
+            Uri.Builder builder = </span><span class="s0">new </span><span class="s1">Uri.Builder(); 
+            builder = builder.scheme(</span><span class="s2">&quot;content&quot;</span><span class="s1">) 
+                    .authority(getResources().getString(R.string.authority)) 
+                    .path(</span><span class="s2">&quot;book_table&quot;</span><span class="s1">); 
+            Uri uri = ContentUris.appendId(builder, l).build(); 
+            contentResolver.delete(uri, </span><span class="s0">null</span><span class="s1">, </span><span class="s0">null</span><span class="s1">); 
+        } 
+        mAdapter.clear(); 
+        getLoaderManager().restartLoader(</span><span class="s4">0</span><span class="s1">, </span><span class="s0">null</span><span class="s1">, mLoaderCallback); 
+    } 
+    </span><span class="s3">/********************************************************************* 
+     * definition of MySimpleCursorAdapter 
+     *********************************************************************/</span><span class="s1"> 
+    </span><span class="s0">private static class </span><span class="s1">MySimpleCursorAdapter </span><span class="s0">extends </span><span class="s1">SimpleCursorAdapter { 
+ 
+        </span><span class="s0">private </span><span class="s1">LayoutInflater mInflater; 
+        </span><span class="s0">private </span><span class="s1">HashSet&lt;Long&gt; mSetId = </span><span class="s0">new </span><span class="s1">HashSet&lt;&gt;(); 
+ 
+ 
+        MySimpleCursorAdapter(Context context, </span><span class="s0">int </span><span class="s1">layout, Cursor c, String[] from, </span><span class="s0">int</span><span class="s1">[] to, </span><span class="s0">int </span><span class="s1">flags) { 
+            </span><span class="s0">super</span><span class="s1">(context, layout, c, from, to, flags); 
+            mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+        } 
+ 
+        </span><span class="s0">private static class </span><span class="s1">Holder { 
+            </span><span class="s0">long </span><span class="s1">id; 
+            TextView nom, title; 
+            CheckBox checkBox; 
+        } 
+ 
+        </span><span class="s0">long</span><span class="s1">[] toLongArray() { 
+            </span><span class="s0">if </span><span class="s1">(mSetId.isEmpty()) 
+                </span><span class="s0">return null</span><span class="s1">; 
+            </span><span class="s0">long</span><span class="s1">[] tab = </span><span class="s0">new long</span><span class="s1">[mSetId.size()]; 
+            </span><span class="s0">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s1">; 
+            </span><span class="s0">for </span><span class="s1">(Long l : mSetId) { 
+                tab[i++] = l; 
+            } 
+            </span><span class="s0">return </span><span class="s1">tab; 
+        } 
+ 
+        </span><span class="s0">void </span><span class="s1">clear() { 
+            mSetId.clear(); 
+        } 
+ 
+        </span><span class="s0">void </span><span class="s1">setLongArray(</span><span class="s0">long</span><span class="s1">[] array) { 
+            </span><span class="s0">if </span><span class="s1">(array == </span><span class="s0">null </span><span class="s1">|| array.length == </span><span class="s4">0</span><span class="s1">) { 
+                Log.d(LOG, </span><span class="s2">&quot;void array setLongArray&quot;</span><span class="s1">); 
+                </span><span class="s0">return</span><span class="s1">; 
+            } 
+            mSetId.clear(); 
+ 
+            </span><span class="s0">for </span><span class="s1">(</span><span class="s0">long </span><span class="s1">l : array) 
+                mSetId.add(l); 
+            Log.d(LOG, </span><span class="s2">&quot;setLongArray in adapter size=&quot; </span><span class="s1">+ mSetId.size()); 
+        } 
+ 
+        @Override 
+        </span><span class="s0">public </span><span class="s1">View newView(Context context, Cursor cursor, ViewGroup parent) { 
+            </span><span class="s3">//return super.newView(context, cursor, parent);</span><span class="s1"> 
+            View view = mInflater.inflate(R.layout.list_item, parent, </span><span class="s0">false</span><span class="s1">); 
+            </span><span class="s0">final </span><span class="s1">Holder holder = </span><span class="s0">new </span><span class="s1">Holder(); 
+            holder.id = cursor.getLong(cursor.getColumnIndex(</span><span class="s2">&quot;_id&quot;</span><span class="s1">)); 
+            holder.nom = (TextView) view.findViewById(R.id.auteur); 
+            holder.title = (TextView) view.findViewById(R.id.titre); 
+            holder.checkBox = (CheckBox) view.findViewById(R.id.check); 
+            view.setTag(holder); 
+            holder.checkBox.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() { 
+                @Override 
+                </span><span class="s0">public void </span><span class="s1">onClick(View v) { 
+                    Log.d(LOG, </span><span class="s2">&quot;onClick&quot;</span><span class="s1">); 
+                    CheckBox check = (CheckBox) v; 
+                    </span><span class="s0">if </span><span class="s1">(check.isChecked()) { 
+                        mSetId.add(holder.id); 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        mSetId.remove(holder.id); 
+                    } 
+                } 
+            }); 
+            holder.checkBox.setChecked(mSetId.contains(holder.id)); 
+ 
+            </span><span class="s0">return </span><span class="s1">view; 
+        } 
+ 
+        @Override 
+        </span><span class="s0">public void </span><span class="s1">bindView(View view, Context context, Cursor cursor) { 
+            </span><span class="s0">super</span><span class="s1">.bindView(view, context, cursor); 
+            Holder holder = (Holder) view.getTag(); 
+            holder.id = cursor.getLong(cursor.getColumnIndex(</span><span class="s2">&quot;_id&quot;</span><span class="s1">)); 
+            holder.nom.setText(cursor.getString(cursor.getColumnIndex(</span><span class="s2">&quot;nom&quot;</span><span class="s1">))); 
+            holder.title.setText(cursor.getString(cursor.getColumnIndex(</span><span class="s2">&quot;title&quot;</span><span class="s1">))); 
+            holder.checkBox.setChecked(mSetId.contains(holder.id)); 
+ 
+        } 
+ 
+        @Override 
+        </span><span class="s0">public </span><span class="s1">Cursor swapCursor(Cursor c) { 
+            </span><span class="s0">return super</span><span class="s1">.swapCursor(c); 
+        } 
+    }</span><span class="s3">/* end MySimpleCursorAdapter definition */</span><span class="s1"> 
+ 
+ 
+ 
+} 
+</span></pre>
+</body>
+</html>

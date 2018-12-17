@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="magenta">#FF00FF</color>
+    <color name="turquoise">#40E0D0</color>
+    <color name="blanc">#FFFFFF</color>
+</resources>
